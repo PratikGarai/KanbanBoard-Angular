@@ -2,3 +2,6 @@
   <mat-icon>event_note</mat-icon>
   <span>Kanban Board</span>
 </mat-toolbar>
+
+<app-task *ngFor="let task of tasks" [task]="task">
+</app-task>
