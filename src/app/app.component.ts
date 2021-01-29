@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Task } from './task/task';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -18,14 +19,33 @@ export class AppComponent {
 
   done : Task[] = [];
 
-  drop(event: CdkDragDrop<string[]>) {
+  constructor(private dialog : MatDialog )
+  {
+
+  }
+
+  drop(event: CdkDragDrop<Task[]>)  : void
+  {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      return;
     } else {
       transferArrayItem(event.previousContainer.data,
                         event.container.data,
                         event.previousIndex,
                         event.currentIndex);
     }
+  }
+
+  newTask() : void {
+    // const dialogRef = this.dialog.open(TaskDialogComponent, {
+    //   width : '270px',
+    //   data :{
+    //     task : {}
+    //   }
+    // })
+
+    // dialogRef
+    //   .afterClosed()
+    //   .subscribe( (result : TaskDialogResult) => this.todo.push(result));
   }
 }
