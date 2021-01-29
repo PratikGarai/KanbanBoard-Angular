@@ -3,5 +3,64 @@
   <span>Kanban Board</span>
 </mat-toolbar>
 
-<app-task *ngFor="let task of tasks" [task]="task">
-</app-task>
+<div class="content-wrapper">
+  <div class="container-wrapper">
+
+    <div class="container">
+      <h2>Backlog</h2>
+      <mat-card 
+        cdkDropList
+        id = "todo"
+        #todoList ="cdkDropList"
+        [cdkDropListData] = "todo"
+        (cdkDropListDropped) = "drop($event)"
+        [cdkDropListConnectedTo] = "[inProgressList, doneList]"
+      >
+        <app-task *ngFor="let task of todo"
+          cdkDrag
+          [task] = "task"
+          (edit) = "edit('tasks', $event)"
+        >
+        </app-task>
+      </mat-card>
+    </div>
+
+    <div class="container">
+      <h2>In progress</h2>
+      <mat-card 
+        cdkDropList
+        id = "inProgress"
+        #inProgressList ="cdkDropList"
+        [cdkDropListData] = "inProgress"
+        (cdkDropListDropped) = "drop($event)"
+        [cdkDropListConnectedTo] = "[todoList, doneList]"
+      >
+        <app-task *ngFor="let task of inProgress"
+          cdkDrag
+          [task] = "task"
+          (edit) = "edit('tasks', $event)"
+        >
+        </app-task>
+      </mat-card>
+    </div>
+
+    <div class="container">
+      <h2>Done</h2>
+      <mat-card 
+        cdkDropList
+        id = "done"
+        #doneList ="cdkDropList"
+        [cdkDropListData] = "done"
+        (cdkDropListDropped) = "drop($event)"
+        [cdkDropListConnectedTo] = "[inProgressList, todoList]"
+      >
+        <app-task *ngFor="let task of done"
+          cdkDrag
+          [task] = "task"
+          (edit) = "edit('tasks', $event)"
+        >
+        </app-task>
+      </mat-card>
+    </div>
+  </div>
+</div>
