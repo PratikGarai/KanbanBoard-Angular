@@ -13,6 +13,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { AngularFirestoreModule } from '@angular/fire/firestore'
 
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 
@@ -32,7 +33,8 @@ import { TaskDialogComponent } from './task-dialog/task-dialog.component';
     MatButtonModule,
     MatDialogModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

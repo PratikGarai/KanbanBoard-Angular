@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "kanban-e58db": {
+      "hosting": {
+        "kanban-angular": [
+          "kanban-e58db"
+        ]
+      }
+    }
+  }
+}
