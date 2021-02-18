@@ -40,12 +40,11 @@ export class AppComponent {
     // const dialogRef = this.dialog.open(TaskDialogComponent, {
     //   width : '270px',
     //   data :{
-    //     task : {}
-    //   }
-    // })
-
-    // dialogRef
-    //   .afterClosed()
-    //   .subscribe( (result : TaskDialogResult) => this.todo.push(result));
+    //      task : {}
+    //    }
+    //  })
+    //  dialogRef
+    //    .afterClosed()
+    //    .subscribe( (result : TaskDialogResult) => this.todo.push(result.task));
   }
 }
