@@ -4,7 +4,7 @@
 </mat-toolbar>
 
 <div class="content-wrapper">
-  <button mat-button (click)="newTask()">
+  <button mat-button (click)="newTask()" class="new-task-button">
       <mat-icon>add</mat-icon> Add Task
   </button>
   <div class="container-wrapper">
@@ -19,10 +19,11 @@
         (cdkDropListDropped) = "drop($event)"
         [cdkDropListConnectedTo] = "[inProgressList, doneList]"
       >
+        <p class="empty-label" *ngIf="todo.length===0">Empty List</p>
         <app-task *ngFor="let task of todo"
           cdkDrag
           [task] = "task"
-          (edit) = "edit('tasks', $event)"
+          (edit) = "edit('todo', $event)"
         >
         </app-task>
       </mat-card>
@@ -38,10 +39,11 @@
         (cdkDropListDropped) = "drop($event)"
         [cdkDropListConnectedTo] = "[todoList, doneList]"
       >
+        <p class="empty-label" *ngIf="inProgress.length===0">Empty List</p>
         <app-task *ngFor="let task of inProgress"
           cdkDrag
           [task] = "task"
-          (edit) = "edit('tasks', $event)"
+          (edit) = "edit('inProgress', $event)"
         >
         </app-task>
       </mat-card>
@@ -57,10 +59,11 @@
         (cdkDropListDropped) = "drop($event)"
         [cdkDropListConnectedTo] = "[inProgressList, todoList]"
       >
+        <p class="empty-label" *ngIf="done.length===0">Empty List</p>
         <app-task *ngFor="let task of done"
           cdkDrag
           [task] = "task"
-          (edit) = "edit('tasks', $event)"
+          (edit) = "edit('done', $event)"
         >
         </app-task>
       </mat-card>

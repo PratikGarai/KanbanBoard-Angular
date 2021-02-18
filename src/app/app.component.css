@@ -34,3 +34,14 @@ mat-toolbar > span {
 .cdk-drag-animating {
     transition: transform 250ms;
 }
+
+.new-task-button {
+    margin-bottom: 30px;
+}
+
+.empty-label {
+    font-size : 2em;
+    padding-bottom: 10px;
+    text-align: center;
+    opacity: 0.4;
+}
