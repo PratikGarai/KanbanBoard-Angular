@@ -3,6 +3,7 @@ import { Task } from './task/task';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import {TaskDialogComponent, TaskDialogResult} from './task-dialog/task-dialog.component';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -11,16 +12,13 @@ import {TaskDialogComponent, TaskDialogResult} from './task-dialog/task-dialog.c
 })
 export class AppComponent {
   
-  todo : Task[] = [
-    { title : "Study" , description : "Study for exams" },
-    { title : "Play" , description : "Play Minecraft" }
-  ];
+  todo = this.store.collection('todo').valueChanges({ idField : 'id' });
 
-  inProgress : Task[] = [];
+  inProgress = this.store.collection('inProgress').valueChanges({ idField : 'id' });
 
-  done : Task[] = [];
+  done = this.store.collection('done').valueChanges({ idField : 'id' });
 
-  constructor(private dialog : MatDialog )
+  constructor(private dialog : MatDialog , private store: AngularFirestore )
   {
 
   }
@@ -29,13 +27,21 @@ export class AppComponent {
   {
     if (event.previousContainer === event.container) {
       return;
-    } else {
-      transferArrayItem(event.previousContainer.data,
+    } 
+    const item = event.previousContainer.data[event.previousIndex];
+    this.store.firestore.runTransaction(() => {
+      return Promise.all([
+        this.store.collection(event.previousContainer.id).doc(item.id).delete(),
+        this.store.collection(event.container.id).add(item)
+      ])
+    })
+    transferArrayItem(event.previousContainer.data,
                         event.container.data,
                         event.previousIndex,
-                        event.currentIndex);
-    }
+                        event.currentIndex
+    );
   }
+  
 
   edit( list : 'done'|'todo'|'inProgress', task:Task) : void {
     //console.log(list);
@@ -45,20 +51,19 @@ export class AppComponent {
          task ,
          enableDelete : true,
        }
-     })
+     });
      dialogRef
        .afterClosed()
        .subscribe( (result : TaskDialogResult) => {
-         const dataList = this[list];
-         const taskIndex = dataList.indexOf(task);
-         if(result.delete) {
-            dataList.splice(taskIndex,1);
+         if(result.delete){
+           this.store.collection(list).doc(task.id).delete();
          }
          else {
-            dataList[taskIndex] = task;
+            this.store.collection(list).doc(task.id).update(task);
          }
-       });
+    });
   }
+
 
   newTask() : void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
@@ -72,7 +77,7 @@ export class AppComponent {
        .subscribe( (result : TaskDialogResult) => {
          //console.log(result);
          if(result.task.title && result.task.description)
-          return this.todo.push(result.task);
+          return this.store.collection('todo').add(result.task);
        });
   }
 }
